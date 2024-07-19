@@ -18,6 +18,8 @@ const Shop = () => {
     setCart((currentCart) => currentCart = []);
   };
 
+  let pointsLeft = points - cartTotal;
+
   const addToCart = (item) => setCart((currentCart) => [...currentCart, item]);
 
   const removeFromCart = (item) => {
@@ -64,7 +66,9 @@ const Shop = () => {
       <div className="right-20 top-0 mt-5 fixed bg-white p-8 rounded-xl shadow-md">
       <div className="font-bold">CART</div>
       <div>{cartItems}</div>
-      <div>Points left: <span className="font-bold">{points - cartTotal}</span> {points - cartTotal == 0 ? 'Yay! Next life!' : ''}</div>
+      <div>Points left: <span className="font-bold">{pointsLeft}</span>
+      <i>{pointsLeft == 0 ? ' Yay! Next life!' : pointsLeft < 0 ? ' Too much consumption!' : ' Let\'s go'}</i> 
+      </div>
       </div>
       <div className="container md:mx-auto md:max-w-[1100px]">
         <div class="grid sm:grid-cols-2 md:grid-cols-6 justify-center mx-auto gap-6 place-center flex-wrap w-100 md:max-w-[1100px]">
