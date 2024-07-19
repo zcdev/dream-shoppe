@@ -1,6 +1,6 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Image from "next/image";
-import { items } from "@/data/items";
+//import { items } from "@/data/items";
 
 const Shop = () => {
   const [cart, setCart] = useState([]);
@@ -20,7 +20,15 @@ const Shop = () => {
 
   let pointsLeft = points - cartTotal;
 
-  const addToCart = (item) => setCart((currentCart) => [...currentCart, item]);
+  const addToCart = (item) => {
+    setCart((currentCart) => [...currentCart, item]);
+    let vote = parseInt(item.vote);
+    vote++;
+      fetch("https://api.apispreadsheets.com/data/2wCduYYU3SRzQjfi/", {
+        method: "POST",
+        body: JSON.stringify({"data": {"vote":`${vote}`}, "query": `select * from 2wCduYYU3SRzQjfi where id=${item.id}`}),
+      })
+  }
 
   const removeFromCart = (item) => {
     setCart((currentCart) => {
@@ -37,8 +45,19 @@ const Shop = () => {
     });
   };
 
-  const listItems = items.map((item) => (
-      <article key={item.id} className="flex flex-col gap-3 bg-white p-8 rounded-xl shadow-md text-center mb-6">
+  let [items, setItems] = useState([]);
+
+  useEffect(() => {
+    fetch('https://api.apispreadsheets.com/data/2wCduYYU3SRzQjfi')
+    .then(response => response.json())
+    .then(data => {
+    setItems(data.data);
+    console.log(data.data)
+  })
+},[])
+
+  const listItems = items.map((item, index) => (
+      <article key={index} className="flex flex-col gap-3 bg-white p-8 rounded-xl shadow-md text-center mb-6">
         <div className="text-7xl cursor-default">{item.emoji}</div>
         <div className="text-lg">{item.name}</div>
         <div className="text-2xl font-semibold mt-auto">{item.price}</div>
@@ -50,8 +69,8 @@ const Shop = () => {
      </article>
   ));
 
-  const cartItems = cart.map((item) => (
-    <div key={item.id}>
+  const cartItems = cart.map((item, index) => (
+    <div key={index}>
       (${item.price}) {`${item.name}`}
       <button type="submit" onClick={() => removeFromCart(item)}>
         <Image className="inline pl-1 pb-1" alt="delete icon" src="./trash.svg" width={20} height={20} />
@@ -71,7 +90,7 @@ const Shop = () => {
       </div>
       </div>
       <div className="container md:mx-auto md:max-w-[1100px]">
-        <div class="grid sm:grid-cols-2 md:grid-cols-6 justify-center mx-auto gap-6 place-center flex-wrap w-100 md:max-w-[1100px]">
+        <div className="grid sm:grid-cols-2 md:grid-cols-6 justify-center mx-auto gap-6 place-center flex-wrap w-100 md:max-w-[1100px]">
       {listItems}
       </div>
       </div>

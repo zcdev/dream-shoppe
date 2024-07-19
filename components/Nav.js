@@ -1,8 +1,6 @@
 import Link from "next/link";
 
-
-
-export default function NavBar() {
+export default function Nav() {
   return (
     <nav className="py-5 px-12 flex justify-between bg-pink-400">
       <Link href="/">
