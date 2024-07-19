@@ -1,18 +1,19 @@
 import React, {useEffect, useState} from "react";
 import Image from "next/image";
-//import { items } from "@/data/items";
 
 const Shop = () => {
   const [cart, setCart] = useState([]);
   
   const cartTotal = cart.reduce((total, { price = 0 }) => total + price, 0);
  
+  // Generate random points
   const randomNumberInRange = (min, max) => {
       return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
   let [points, setPoints] = useState(0);
 
+  // Set points and reset cart
   const handleGenerate = () => {
     setPoints(randomNumberInRange(1, 100000));
     setCart((currentCart) => currentCart = []);
@@ -20,16 +21,18 @@ const Shop = () => {
 
   let pointsLeft = points - cartTotal;
 
+  // Add item to cart and cast votes
   const addToCart = (item) => {
     setCart((currentCart) => [...currentCart, item]);
     let vote = parseInt(item.vote);
     vote++;
-      fetch("https://api.apispreadsheets.com/data/2wCduYYU3SRzQjfi/", {
+      fetch('https://api.apispreadsheets.com/data/2wCduYYU3SRzQjfi', {
         method: "POST",
-        body: JSON.stringify({"data": {"vote":`${vote}`}, "query": `select * from 2wCduYYU3SRzQjfi where id=${item.id}`}),
+        body: JSON.stringify({'data': {'vote':`${vote}`}, 'query': `select * from 2wCduYYU3SRzQjfi where id=${item.id}`}),
       })
   }
 
+  // Remove item from cart
   const removeFromCart = (item) => {
     setCart((currentCart) => {
       const indexOfItemToRemove = currentCart.findIndex((cartItem) => cartItem.id === item.id);
@@ -47,15 +50,19 @@ const Shop = () => {
 
   let [items, setItems] = useState([]);
 
+  // Fetch items from spreadshseet
   useEffect(() => {
     fetch('https://api.apispreadsheets.com/data/2wCduYYU3SRzQjfi')
     .then(response => response.json())
     .then(data => {
-    setItems(data.data);
-    console.log(data.data)
-  })
-},[])
+      setItems(data.data);
+    })
+  },[]);
 
+  // Sort items in ranking order
+  items.sort((a, b) => b.vote - a.vote);
+
+  // Display items at wall
   const listItems = items.map((item, index) => (
       <article key={index} className="flex flex-col gap-3 bg-white p-8 rounded-xl shadow-md text-center mb-6">
         <div className="text-7xl cursor-default">{item.emoji}</div>
@@ -69,6 +76,7 @@ const Shop = () => {
      </article>
   ));
 
+  // Display items in cart
   const cartItems = cart.map((item, index) => (
     <div key={index}>
       (${item.price}) {`${item.name}`}
