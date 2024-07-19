@@ -7,6 +7,6 @@ It is my first try of building a simple little game simulating a shopping cart a
 Utilized a spreadsheet API instead of a full scale database due to the very simple needs.
 
 Users can generate some random shopping points to purchase the intengible goods (in real world they are priceless).
-The shoppe items are listed by ranking from the highest and most popular demand.
-Try to spend all you have and see if you got them all until zero point is left!
+The shoppe items are listed by ranking from the highest and most popularly demanded.
+Try to spend all you have and see if you got them all... Until zero point is left!
 I hope it encourages the pursuit of your dreams.
