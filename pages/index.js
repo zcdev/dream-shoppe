@@ -63,8 +63,8 @@ const Shop = () => {
     <main className="bg-[#f8f7f5] min-h-[calc(100vh-76px)] px-10 py-8">
       <button className="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" onClick={handleGenerate}>Generate your points</button>
       <div className="pb-5">Here are your points to shop: {points}</div>
-      <div className="right-20 top-0 mt-5 fixed bg-white p-8 rounded-xl shadow-md">
-      <div className="font-bold">CART</div>
+      <div className="right-0 top-0 md:right-20 md:mt-5 fixed bg-white p-4 md:p-8 md:rounded-xl shadow-md w-full md:w-max z-10">
+      <div className="font-bold"><p className="text-pink-500 md:hidden">Dream Shoppe</p>CART</div>
       <div>{cartItems}</div>
       <div>Points left: <span className="font-bold">{pointsLeft}</span>
       <i>{pointsLeft == 0 ? ' Yay! Next life!' : pointsLeft < 0 ? ' Too much consumption!' : ' Let\'s go'}</i> 
